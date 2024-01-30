@@ -17,11 +17,6 @@ namespace WebAPI.Controllers
 
 
         // CRUD Operations :
-
-
-
-
-
         // Create
         [HttpPost]
         [Route("")]
@@ -33,8 +28,7 @@ namespace WebAPI.Controllers
             _dbContext.SaveChanges();
             return Ok(product.Id);
         }
-
-
+        
         // READ
         [HttpGet]
         [Route("")]
@@ -70,7 +64,6 @@ namespace WebAPI.Controllers
             }
         }
 
-
         // UPDATE 
         [HttpPut]
         [Route("")]
@@ -93,7 +86,6 @@ namespace WebAPI.Controllers
             }
             
         }
-
 
         // DELETE
         [HttpDelete]
