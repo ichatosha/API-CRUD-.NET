@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using WebAPI;
 using WebAPI.Data;
+
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +28,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+
+// middlewares 
+app.UseMiddleware<RateLimitingMiddleWare>();
+app.UseMiddleware<ProfilingMiddleWare>();
 
 app.MapControllers();
 
