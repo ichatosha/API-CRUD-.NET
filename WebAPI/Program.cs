@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using WebAPI;
+using WebAPI.Authentication;
 using WebAPI.Data;
 
 
@@ -26,6 +28,12 @@ builder.Services.AddSwaggerGen();
 
 // set database
 builder.Services.AddDbContext<inherDbContext>(bulider => bulider.UseSqlServer("server=HESHAM\\HESHAMDB; database= Products; integrated security = true ; trust server certificate= true; "));
+
+
+// authentication
+builder.Services.AddAuthentication()
+// can add more than one scheme. but we use the default now.
+        .AddScheme<AuthenticationSchemeOptions,BasicAuthenticationHandler>("Basic", null);
 
 
 var app = builder.Build();

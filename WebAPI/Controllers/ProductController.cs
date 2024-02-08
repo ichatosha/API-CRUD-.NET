@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebAPI.Data;
 
 namespace WebAPI.Controllers
@@ -6,6 +8,9 @@ namespace WebAPI.Controllers
 
     [ApiController]
     [Route("[controller]")]
+
+    //authentication 
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly inherDbContext _dbContext;
@@ -17,6 +22,7 @@ namespace WebAPI.Controllers
 
 
         // CRUD Operations :
+
         // Create
         [HttpPost]
         [Route("")]
@@ -28,16 +34,20 @@ namespace WebAPI.Controllers
             _dbContext.SaveChanges();
             return Ok(product.Id);
         }
-        
+
+
         // READ
         [HttpGet]
         [Route("")]
+        
+        [AllowAnonymous]
         public ActionResult<IEnumerable<Product>> GetProducts() 
         {
             var records = _dbContext.Set<Product>().ToList();
             if (records != null )
             {
-
+                var userName = User.Identity.Name;
+                var UserId = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 return Ok(records); 
             }
             else
@@ -47,8 +57,11 @@ namespace WebAPI.Controllers
             }
         
         }
+
+        // Get product by Id :
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id}")] // Key == int id (parameter) [FromRoute(Name = "Key")]
+        
         public ActionResult<Product> GetProductById(int id)
         {
             var inID = _dbContext.Set<Product>().Find(id);
@@ -63,6 +76,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
         }
+
 
         // UPDATE 
         [HttpPut]
@@ -86,6 +100,7 @@ namespace WebAPI.Controllers
             }
             
         }
+
 
         // DELETE
         [HttpDelete]
