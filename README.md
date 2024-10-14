@@ -1,1 +1,2 @@
-Create API with .NET which can (Create + Read + Update + Delete) data in database with SQL Server.
+# CRUD API
+ A .NET Web API performing basic CRUD operations on a SQL Server database, written in C#.
